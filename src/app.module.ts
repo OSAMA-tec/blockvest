@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-// import { GraphQLModule } from '@nestjs/graphql';
-// import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { GraphQLModule } from '@nestjs/graphql';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
@@ -15,10 +15,11 @@ import { MlModule } from './ml/ml.module';
       isGlobal: true,
       envFilePath: `.env.${process.env.NODE_ENV}`,
     }),
-    // GraphQLModule.forRoot<ApolloDriverConfig>({
-    //   driver: ApolloDriver,
-    //   autoSchemaFile: true, // This will generate the schema in memory
-    // }),
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      //for graphql
+      driver: ApolloDriver,
+      autoSchemaFile: true, // This will generate the schema in memory
+    }),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
