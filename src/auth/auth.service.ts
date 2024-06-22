@@ -3,13 +3,15 @@ import {
   ConflictException,
   InternalServerErrorException,
   BadRequestException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { UserDocument, User } from '../schemas/user.schema';
-import { CreateUserDto } from '../auth/dto/create-user.dto';
+import { CreateUserDto, LoginUserDto } from '../auth/dto/create-user.dto';
 import * as bcrypt from 'bcrypt';
 import { EmailService } from '../services';
+import { JwtService } from '../auth/jwt/jwt.service';
 
 export interface UserWithoutPassword extends Omit<User, 'password'> {
   id: string;
@@ -20,6 +22,7 @@ export class AuthService {
   constructor(
     @InjectModel(User.name) private userModel: Model<UserDocument>,
     private emailService: EmailService,
+    private jwtService: JwtService,
   ) {}
 
   async create(createUserDto: CreateUserDto): Promise<UserWithoutPassword> {
@@ -61,6 +64,7 @@ export class AuthService {
       // Send OTP email
       await this.sendOTPEmail(savedUser.email, otp);
 
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { password, ...result } = savedUser.toObject();
       return { ...result, id: savedUser._id.toString() } as UserWithoutPassword;
     } catch (error) {
@@ -144,5 +148,38 @@ export class AuthService {
 </html>
 `;
     await this.emailService.queueEmail(email, subject, text, html);
+  }
+
+  async loginUser(loginUserDto: LoginUserDto): Promise<{ token: string }> {
+    const { email, password } = loginUserDto;
+
+    const user = await this.userModel
+      .findOne({ email })
+      .select('+password')
+      .exec();
+    if (!user) {
+      throw new UnauthorizedException('Invalid credentials');
+    }
+    if (!user.isVerified) {
+      throw new BadRequestException(
+        'Please verify your email before logging in',
+      );
+    }
+
+    // Verify the password
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      throw new UnauthorizedException('Invalid credentials');
+    }
+
+    // Generate JWT token
+    const payload = {
+      sub: user._id,
+      email: user.email,
+      role: user.role,
+    };
+    const token = await this.jwtService.generateToken(payload);
+
+    return { token };
   }
 }

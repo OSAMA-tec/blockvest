@@ -1,5 +1,9 @@
 import { Controller, Body, Post } from '@nestjs/common';
-import { CreateUserDto, VerifyOtpDto } from '../auth/dto/create-user.dto';
+import {
+  CreateUserDto,
+  VerifyOtpDto,
+  LoginUserDto,
+} from '../auth/dto/create-user.dto';
 import { AuthService } from './auth.service';
 import { VerifyService } from './verify.service';
 
@@ -17,5 +21,9 @@ export class AuthController {
   async verifyotp(@Body() verifyOtpdto: VerifyOtpDto) {
     const { email, otp } = verifyOtpdto;
     return this.verifyService.verifyOtp(email, otp);
+  }
+  @Post('login')
+  async Login(@Body() loginUserDto: LoginUserDto) {
+    return this.authService.loginUser(loginUserDto);
   }
 }

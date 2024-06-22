@@ -12,6 +12,14 @@ export class CreateUserDto {
   @MinLength(6)
   password: string;
 }
+export class LoginUserDto {
+  @IsEmail()
+  email: string;
+
+  @IsString()
+  @MinLength(6)
+  password: string;
+}
 export class VerifyOtpDto {
   @IsString()
   email: string;
