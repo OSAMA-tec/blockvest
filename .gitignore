@@ -3,6 +3,8 @@
 /node_modules
 /build
 
+
+/dockerguide
 # Logs
 logs
 *.log
@@ -38,6 +40,7 @@ lerna-debug.log*
 # dotenv environment variable files
 .env
 .env.development.local
+.env.development
 .env.test.local
 .env.production.local
 .env.local
