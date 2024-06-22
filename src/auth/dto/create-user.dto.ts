@@ -13,6 +13,8 @@ export class CreateUserDto {
   password: string;
 }
 export class VerifyOtpDto {
+  @IsString()
   email: string;
+  @IsString()
   otp: string;
 }

@@ -134,7 +134,7 @@ export class AuthService {
                     <p style="font-size: 14px; color: #666; margin-bottom: 20px;">This OTP will expire in 10 minutes for security reasons. If you didn't request this verification, please ignore this email.</p>
                     <div style="border-top: 1px solid #eee; padding-top: 20px; margin-top: 20px; text-align: center; font-size: 12px; color: #888;">
                         <p>This is an automated message, please do not reply to this email.</p>
-                        <p>&copy; 2023 Your Company Name. All rights reserved.</p>
+                        <p>&copy; 2024 BlockVest. All rights reserved.</p>
                     </div>
                 </div>
             </td>
