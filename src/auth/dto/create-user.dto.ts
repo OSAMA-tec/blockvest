@@ -12,3 +12,7 @@ export class CreateUserDto {
   @MinLength(6)
   password: string;
 }
+export class VerifyOtpDto {
+  email: string;
+  otp: string;
+}

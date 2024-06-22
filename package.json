@@ -38,6 +38,7 @@
     "dotenv": "^16.4.5",
     "graphql": "^16.9.0",
     "helmet": "^7.1.0",
+    "ioredis": "^5.4.1",
     "mongoose": "^8.4.3",
     "morgan": "^1.10.0",
     "passport": "^0.7.0",

@@ -4,7 +4,7 @@
 /build
 
 
-/dockerguide
+dockerguide
 # Logs
 logs
 *.log

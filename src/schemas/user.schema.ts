@@ -31,6 +31,15 @@ export class User {
 
   @Prop({ default: Date.now })
   updatedAt: Date;
+
+  @Prop({ default: null })
+  otp: string;
+
+  @Prop({ default: false })
+  isVerified: boolean;
+
+  @Prop({ default: null })
+  otpExpires: Date;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

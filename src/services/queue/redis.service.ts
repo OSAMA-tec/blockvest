@@ -1,35 +1,45 @@
-// src/services/queue/redis.service.ts
-import { Injectable, OnModuleInit, OnModuleDestroy } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
+import Redis from 'ioredis';
 import { ConfigService } from '@nestjs/config';
-import { createClient, RedisClientType } from 'redis';
 
 @Injectable()
-export class RedisService implements OnModuleInit, OnModuleDestroy {
-  private client: RedisClientType;
+export class RedisService {
+  private readonly redis: Redis;
+  private readonly subscriber: Redis;
 
   constructor(private configService: ConfigService) {
-    this.client = createClient({
+    const redisConfig = {
+      host: this.configService.get<string>('REDIS_HOST'),
+      port: this.configService.get<number>('REDIS_PORT'),
       password: this.configService.get<string>('REDIS_PASSWORD'),
-      socket: {
-        host: this.configService.get<string>('REDIS_HOST'),
-        port: this.configService.get<number>('REDIS_PORT'),
-      },
+    };
+
+    this.redis = new Redis(redisConfig);
+    this.subscriber = new Redis(redisConfig);
+
+    // Add error listeners
+    this.redis.on('error', (error) => {
+      console.error('Redis Client Error:', error);
+    });
+
+    this.subscriber.on('error', (error) => {
+      console.error('Redis Subscriber Error:', error);
     });
   }
 
-  async onModuleInit() {
-    await this.client.connect();
+  async pushToQueue(queue: string, data: string): Promise<number> {
+    return this.redis.rpush(queue, data);
   }
 
-  async onModuleDestroy() {
-    await this.client.quit();
+  async popFromQueue(queue: string): Promise<string | null> {
+    return this.redis.lpop(queue);
   }
 
-  async pushToQueue(queueName: string, data: string) {
-    await this.client.lPush(queueName, data);
+  async publish(channel: string, message: string): Promise<number> {
+    return this.redis.publish(channel, message);
   }
 
-  async popFromQueue(queueName: string): Promise<string | null> {
-    return await this.client.rPop(queueName);
+  getSubscriber(): Redis {
+    return this.subscriber;
   }
 }
