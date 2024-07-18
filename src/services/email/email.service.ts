@@ -27,16 +27,25 @@ export class EmailService implements OnModuleInit {
   }
 
   private async startListeningQueue() {
-    const subscriber = this.redisService.getSubscriber();
-    await subscriber.subscribe('email_queue_channel');
-
-    subscriber.on('message', async (channel) => {
-      if (channel === 'email_queue_channel' && !this.isProcessing) {
-        await this.processEmailQueue();
+    try {
+      await this.redisService.waitForConnection();
+      const subscriber = this.redisService.getSubscriber();
+      if (!subscriber) {
+        throw new Error('Redis subscriber is not available');
       }
-    });
 
-    this.logger.log('Started listening to email queue channel');
+      await subscriber.subscribe('email_queue_channel');
+
+      subscriber.on('message', async (channel) => {
+        if (channel === 'email_queue_channel' && !this.isProcessing) {
+          await this.processEmailQueue();
+        }
+      });
+
+      this.logger.log('Started listening to email queue channel');
+    } catch (error) {
+      this.logger.error(`Failed to start listening to queue: ${error.message}`, error.stack);
+    }
   }
 
   async queueEmail(to: string, subject: string, text: string, html?: string) {

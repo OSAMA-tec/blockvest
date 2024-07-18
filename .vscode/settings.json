@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "undefined/subscriptions/a5bf614c-d521-460c-bf91-44eacf8630eb/resourceGroups/appsvc_linux_centralus_basic3/providers/Microsoft.Web/sites/blockvest",
+    "appService.deploySubpath": "."
+}
