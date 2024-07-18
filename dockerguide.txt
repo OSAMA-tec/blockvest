@@ -132,3 +132,45 @@ This mounts your current directory to the container, allowing changes to be refl
 3. Environment variables: Make sure to pass your environment variables to the container. You can do this in the `docker run` command or in your `docker-compose.yml` file.
 
 Remember to adjust the commands and configurations based on your specific project structure and requirements.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+i am working on one project in which tech stack i am using is MERN+BLOCKCHAIN+MACHINE LEARNING 
+Project Detail:
+basically i wana create a project on Realestate in which i want that if someone goes to realestate agent to buy some property then our model should show the results to customer that either your investment goes up or down in future or is this beneficall for you or not . or give him clear image that should he invest in this or not. this is machine learning part in which i will train a model in this .
+
+and blockchain part is basically i want that if some have there property or anything like car or mobile etc
+we convert this thing(car,property,mobile ) etc to token or nfts means this things only belong to his owner 
+if someone try to check the details of someone asserts like if someone try to check mobile details like this mobile belong to whom then our system should show that this mobile belong to him or her 
+basically we wana convert this into nfts
+so i giving two options of payment one is digital currency and bother is cash then we will verify that this is ligit or not.
+means user can  convert property into nft using digital currency and if not then have to pay using cash then we will verify by it self then we transfer nft to him.
+and i will create app through which user will access these things
+i hope you got my point so give me more detail more over view of project .
+
+so give me more detail or things which i should add in this clear picture how this project is good in market and what you think what things i should add in this to make more perfect and best project
+this is my basic idea so please tell me did you undertand this idea?

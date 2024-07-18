@@ -16,9 +16,8 @@ import { MlModule } from './ml/ml.module';
       envFilePath: `.env.${process.env.NODE_ENV}`,
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
-      //for graphql
       driver: ApolloDriver,
-      autoSchemaFile: true, // This will generate the schema in memory
+      autoSchemaFile: true,
     }),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
